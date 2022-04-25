@@ -163,7 +163,7 @@ class MyApp(QMainWindow):
             self.thread.finished.connect(self.thread.deleteLater)
             self.thread.start()
         else:
-            QMessageBox.warning(self, "Range Error", "Rnges can't be zero \
+            QMessageBox.warning(self, "Range Error", "Ranges can't be zero \
 and right one should be greater than left one")
 
     def decrease_completed(self, updated_listings):
