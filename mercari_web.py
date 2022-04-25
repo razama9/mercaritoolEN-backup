@@ -85,6 +85,17 @@ def wfe_by_class(driver, el_class):
         return "element not found"
 
 
+# BY CSS
+def wfe_by_css(driver, el_css):
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, el_css))
+        )
+        return element
+    except Exception as e:
+        return "element not found"
+
+
 # Bring element into view
 def bring_to_view(driver, element):
     driver.execute_script("arguments[0].scrollIntoView();", element)
@@ -131,9 +142,9 @@ def get_all_listings(driver):
                 list_item['url'] = el.find_element(By.TAG_NAME, 'a').get_attribute('href')
                 list_item['img'] = driver.execute_script(f"return document.querySelectorAll('mer-item-object')[{index}].shadowRoot.querySelector('mer-item-thumbnail').shadowRoot.querySelector('img').getAttribute('src')")
                 li_content = driver.execute_script(f"return document.querySelectorAll('mer-item-object')[{index}].shadowRoot.querySelector('.content')")
-                list_item['title'] = li_content.find_element(By.CLASS_NAME, 'item-title').text
+                list_item['title'] = li_content.find_element(By.CLASS_NAME, 'item-label').text
                 list_item['price'] = li_content.find_element(By.CLASS_NAME, 'item-price').text
-                if len(li_content.find_elements(By.CLASS_NAME, 'item-label')) > 0:
+                if len(li_content.find_elements(By.CLASS_NAME, 'information-label')) > 0:
                     list_item['source'] = 'unpublished'
                 all_items.append(list_item)
             is_done = True
@@ -173,7 +184,7 @@ def get_all_drafts(driver):
                     list_item['url'] = el.find_element(By.TAG_NAME, 'a').get_attribute('href')
                     list_item['img'] = driver.execute_script(f"return document.querySelectorAll('mer-item-object')[{index}].shadowRoot.querySelector('mer-item-thumbnail').shadowRoot.querySelector('img').getAttribute('src')")
                     li_content = driver.execute_script(f"return document.querySelectorAll('mer-item-object')[{index}].shadowRoot.querySelector('.content')")
-                    list_item['title'] = li_content.find_element(By.CLASS_NAME, 'item-title').text
+                    list_item['title'] = li_content.find_element(By.CLASS_NAME, 'item-label').text
                     list_item['price'] = li_content.find_element(By.CLASS_NAME, 'item-price').text
                     all_items.append(list_item)
             else:
@@ -234,8 +245,9 @@ def publish_the_draft(driver, product_link):
 def publish_the_unpublished(driver, product_link):
     driver.get(product_link)
     product_editing = wfe_by_xpath(driver, '//div[@data-testid="checkout-button-container"]')
-    sleep(randint(2,4))
+    # sleep(randint(2,4))
     product_editing.click()
+    sleep(randint(2,4))
     activate_link = wfe_by_name(driver, 'activate_the_item')
     bring_to_view(driver, activate_link)
     sleep(randint(2,4))
