@@ -230,7 +230,7 @@ def change_price(driver, price):
 
 def publish_the_draft(driver, product_link):
     driver.get(product_link)
-    activate_link = wfe_by_name(driver, 'list_the_item')
+    activate_link = wfe_by_css(driver, 'mer-button[data-testid="list-draft-button"] button[type="submit"]')
     bring_to_view(driver, activate_link)
     sleep(randint(2,4))
     activate_link.click()
@@ -248,7 +248,7 @@ def publish_the_unpublished(driver, product_link):
     # sleep(randint(2,4))
     product_editing.click()
     sleep(randint(2,4))
-    activate_link = wfe_by_name(driver, 'activate_the_item')
+    activate_link = wfe_by_css(driver, 'button[data-testid="activate-button"]')
     bring_to_view(driver, activate_link)
     sleep(randint(2,4))
     activate_link.click()
@@ -260,7 +260,7 @@ def unpublish_the_published(driver, product_link):
     edit_btn = wfe_by_xpath(driver, '//mer-button[@data-testid="checkout-button"]')
     sleep(randint(2,4))
     edit_btn.click()
-    deactive_link = wfe_by_name(driver, 'suspend_the_item')
+    deactive_link = wfe_by_css(driver, 'button[data-testid="suspend-button"]')
     bring_to_view(driver, deactive_link)
     sleep(randint(2,3))
     deactive_link.click()
